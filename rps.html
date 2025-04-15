@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Paper & Scissors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding: 2rem;
+    }   
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .choice {
+      width: 120px;
+      height: 150px;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .choice:hover {
+      transform: scale(1.05);
+    }
+
+    .choice img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .choice span {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #msg {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      color: #333;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rock Paper & Scissors</h1>
+
+  <div class="container">
+    <button class="choice" id="rock">
+      <img src="../r.PNG" alt="rock" />
+      <span>Rock</span>
+    </button>
+    <button class="choice" id="paper">
+      <img src="../p.PNG" alt="paper" />
+      <span>Paper</span>
+    </button>
+    <button class="choice" id="scissor">
+      <img src="../s.PNG" alt="scissor" />
+      <span>Scissors</span>
+    </button>
+  </div>
+
+  <h1 id="msg"></h1>
+  <p id="userScorePara">User Won by 0</p>
+  <p id="compScorePara">Computer Won by 0</p>
+
+  <script>
+    let userScore = 0;
+    let compScore = 0;
+    const choices = document.querySelectorAll(".choice");
+    const msg = document.getElementById("msg");
+    const userscorepara = document.getElementById("userScorePara");
+    const compscorepara = document.getElementById("compScorePara");
+
+    choices.forEach((choice) => {
+      choice.addEventListener("click", () => {
+        const userChoice = choice.getAttribute("id");
+        gamePlay(userChoice);
+      });
+    });
+
+    const gencompChoice = () => {
+      const options = ["rock", "paper", "scissor"];
+      let compOptions = Math.floor(Math.random() * 3);
+      return options[compOptions];
+    };
+
+    const gamePlay = (userChoice) => {
+      const compChoice = gencompChoice();
+      if (userChoice === compChoice) {
+        msg.innerText = "Game Draw";
+      } else {
+        let userWin = true;
+
+        if (userChoice === "rock") {
+          userWin = compChoice === "paper" ? false : true;
+        } else if (userChoice === "paper") {
+          userWin = compChoice === "scissor" ? false : true;
+        } else {
+          userWin = compChoice === "rock" ? false : true;
+        }
+        showWinner(userWin, compChoice);
+      }
+    };
+
+    const showWinner = (userWin, compChoice) => {
+      if (userWin) {
+        userScore++;
+        userscorepara.innerText = "User Won by " + userScore;
+        msg.innerText = `You Won! Computer chose ${compChoice}`;
+      } else {
+        compScore++;
+        compscorepara.innerText = "Computer Won by " + compScore;
+        msg.innerText = `Computer Won! Computer chose ${compChoice}`;
+      }
+    };
+  </script>
+</body>
+</html>
